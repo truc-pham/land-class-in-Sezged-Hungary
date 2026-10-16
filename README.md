@@ -22,7 +22,7 @@ install.packages(c("terra", "sf", "ggplot2", "patchwork", "rnaturalearthdata", "
 source("R/szeged_land_cover.R")
 ```
 
-If the remote read fails (for example behind a firewall), download tile `ESA_WorldCover_10m_2021_v200_N45E018_Map.tif` from the [WorldCover viewer](https://worldcover2021.esa.int/download) into `data/raw/`; the script uses the local file automatically.
+**Using a Google Earth Engine export.** Put the GeoTIFF you exported from Earth Engine (`ESA/WorldCover/v200`, band `Map`) into `data/raw/`. The script uses any `.tif` it finds there instead of the remote tile. You can also download tile `ESA_WorldCover_10m_2021_v200_N45E018_Map.tif` from the [WorldCover viewer](https://worldcover2021.esa.int/download).
 
 ## Outputs
 

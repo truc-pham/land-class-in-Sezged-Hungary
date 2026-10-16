@@ -43,11 +43,14 @@ boundary <- st_read(boundary_file, quiet = TRUE) |> st_transform(4326)
 # Tiles are 3 x 3 degrees, named after their south-west corner.
 # Szeged (46.25 N, 20.15 E) lies in tile N45E018.
 tile_name  <- "ESA_WorldCover_10m_2021_v200_N45E018_Map.tif"
-local_tile <- file.path("data/raw", tile_name)
 remote     <- paste0("/vsicurl/https://esa-worldcover.s3.eu-central-1.amazonaws.com/",
                      "v200/2021/map/", tile_name)
 
-src <- if (file.exists(local_tile)) local_tile else remote
+# Use a local GeoTIFF if there is one (e.g. a Google Earth Engine export of
+# ESA/WorldCover/v200 clipped to Szeged); otherwise read the public tile remotely.
+local_tifs <- list.files("data/raw", pattern = "\\.tif$", full.names = TRUE)
+src <- if (length(local_tifs) > 0) local_tifs[1] else remote
+message("Land cover source: ", src)
 lc  <- rast(src)
 lc  <- crop(lc, vect(boundary), snap = "out")
 lc  <- mask(lc, vect(boundary))
